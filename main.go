@@ -134,7 +134,7 @@ func timeoutSet(x time.Duration) {
 }
 func timeoutWait() {
 	for time.Now().Sub(resumeTime) < 0 {
-		//do nothing
+		print("waiting")
 	}
 }
 
