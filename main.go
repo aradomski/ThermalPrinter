@@ -68,6 +68,8 @@ func main() {
 	sleep(defaultSleepTime)
 	write([]byte("Dzien dobry"))
 
+	write([]byte(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum non diam quis luctus. Nam ultricies dapibus massa, in ultrices enim. Praesent tempus est eu ex mollis, id luctus nisi vehicula. Ut sed ultrices neque, ac luctus nulla. Suspendisse at venenatis dui. Nunc tempor congue mauris, sit amet elementum nibh dictum a. Cras condimentum velit at vulputate condimentum. Vivamus nec orci ipsum. Morbi ut ex lorem. Sed nisl nulla, posuere non eleifend eu, ornare nec tortor. Curabitur ultrices blandit mi a tempus. Duis et ante sed libero egestas vulputate auctor a purus. Nunc neque enim, sollicitudin id efficitur sit amet, tincidunt in metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc molestie luctus ligula, a porttitor diam scelerisque at."))
+
 }
 func sleep(duration time.Duration) {
 	time.Sleep(duration)
