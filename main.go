@@ -109,11 +109,12 @@ func sleep(duration time.Duration) {
 func writeBytes(bytes []byte) {
 	//if bytes != 0x13 {
 	timeoutWait()
-		n, err := port.Write(bytes)
-		if err != nil {
-			log.Fatalf("port.Write: %v", err)
-		}
-		fmt.Println("Wrote", n, "bytes.")
+	n, err := port.Write(bytes)
+	if err != nil {
+		log.Fatalf("port.Write: %v", err)
+	}
+	fmt.Println("Wrote", n, "bytes.")
+	sleep(defaultSleepTime)
 	//	d := float64(byteTime)
 	//	if oneByte == '\n' || column == maxColumn {
 	//		if prevByte == '\n' {
