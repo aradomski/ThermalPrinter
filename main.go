@@ -77,7 +77,7 @@ func write(bytes []byte) {
 	for _, oneByte := range bytes {
 		if oneByte != 0x13 {
 			timeoutWait()
-			n, err := port.Write([]byte{oneByte})
+			n, err := port.Write(bytes)
 			if err != nil {
 				log.Fatalf("port.Write: %v", err)
 			}
