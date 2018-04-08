@@ -6,6 +6,9 @@ import (
 	"io"
 	"fmt"
 	"time"
+	"gopkg.in/oleiade/lane.v1"
+	"bytes"
+	"encoding/gob"
 )
 
 var (
@@ -23,6 +26,7 @@ var (
 	lineSpacing      = 8
 	dotPrintTime     = 0.03
 	dotFeedTime      = 0.0021
+	queue            = lane.NewQueue()
 )
 var port io.ReadWriteCloser
 
@@ -46,6 +50,8 @@ func main() {
 
 	// Make sure to close it later.
 	defer port.Close()
+
+	go lookForQueueUpdates()
 
 	sleep(defaultSleepTime)
 	wake()
@@ -71,11 +77,36 @@ func main() {
 	write([]byte(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum non diam quis luctus. Nam ultricies dapibus massa, in ultrices enim. Praesent tempus est eu ex mollis, id luctus nisi vehicula. Ut sed ultrices neque, ac luctus nulla. Suspendisse at venenatis dui. Nunc tempor congue mauris, sit amet elementum nibh dictum a. Cras condimentum velit at vulputate condimentum. Vivamus nec orci ipsum. Morbi ut ex lorem. Sed nisl nulla, posuere non eleifend eu, ornare nec tortor. Curabitur ultrices blandit mi a tempus. Duis et ante sed libero egestas vulputate auctor a purus. Nunc neque enim, sollicitudin id efficitur sit amet, tincidunt in metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc molestie luctus ligula, a porttitor diam scelerisque at."))
 
 }
+
+func lookForQueueUpdates() {
+	for {
+		if !queue.Empty() {
+			bytes, err := GetBytes(queue.Pop())
+			if err == nil {
+				writeBytes(bytes)
+			}
+		}
+	}
+}
+
+func GetBytes(key interface{}) ([]byte, error) {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	err := enc.Encode(key)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+func write(bytes []byte) {
+	queue.Append(bytes)
+}
+
 func sleep(duration time.Duration) {
 	time.Sleep(duration)
 }
 
-func write(bytes []byte) {
+func writeBytes(bytes []byte) {
 	for _, oneByte := range bytes {
 		if oneByte != 0x13 {
 			timeoutWait()
