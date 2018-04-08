@@ -58,7 +58,7 @@ func main() {
 		(printBreakTime << 5) | printDensity})
 	//dotPrintTime := 0.03
 	//dotFeedTime := 0.0021
-
+	sleep(defaultSleepTime)
 	write([]byte("Dzien dobry"))
 
 }
