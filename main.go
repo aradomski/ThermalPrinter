@@ -74,21 +74,21 @@ func sleep(duration time.Duration) {
 }
 
 func write(bytes []byte) {
-	for _, byte := range bytes {
-		if byte != 0x13 {
+	for _, oneByte := range bytes {
+		if oneByte != 0x13 {
 			timeoutWait()
-			n, err := port.Write(bytes)
+			n, err := port.Write([]byte{oneByte})
 			if err != nil {
 				log.Fatalf("port.Write: %v", err)
 			}
 			fmt.Println("Wrote", n, "bytes.")
 			d := float64(byteTime)
-			if byte == '\n' || column == maxColumn {
+			if oneByte == '\n' || column == maxColumn {
 				if prevByte == '\n' {
 					d += float64(charHeight) +
 						float64(lineSpacing) *
 							dotFeedTime
-					prevByte = byte
+					prevByte = oneByte
 				} else {
 					d += (float64(charHeight) *
 						float64(dotPrintTime)) +
@@ -99,7 +99,7 @@ func write(bytes []byte) {
 				}
 			} else {
 				column += 1
-				prevByte = byte
+				prevByte = oneByte
 			}
 			timeoutSet(time.Duration(d))
 		}
